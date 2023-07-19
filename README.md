@@ -79,6 +79,16 @@ If any error occurs during the connection setup, it will be logged using `log.Pr
 make docker-up
 ```
 
+#To run unit test
+```bash
+1. run make docker-down
+2. replace "docker.for.mac.localhost" with "localhost" in the connection string
+3. run make docker-up
+4. Go to guestlist/cmd/app
+5. run go test
+6. run make docker-down
+```
+
 
 ## API demo
 

@@ -9,6 +9,36 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Add table
+// @Description Add table to sql db
+// @Tags Add
+// @Accept json
+// @Produce json
+// @Param body body dto.AddTableRequest true "body"
+// @Success 200 {object} dto.GuestResponse "id" "capacity"
+// @Failure 400 {object} errors.ErrorInfo "Invalid input"
+// @Failure 403 {object} errors.ErrorInfo "Forbiden to add"
+// @Failure 500 {object} errors.ErrorInfo "Internal server error"
+// @Router /tables [POST]
+func AddTable(c *gin.Context) {
+	response := dto.AddTableResponse{}
+	request := dto.AddTableRequest{}
+	c.BindJSON(&request)
+	statusCode, result := services.AddTableService(request,response)
+	switch statusCode {
+	case 200:
+		c.JSON(http.StatusOK, result)
+	case 400:
+		c.JSON(http.StatusBadRequest, "Invalid input")
+	case 403:
+		c.JSON(http.StatusForbidden, "Forbiden to update")
+	case 500:
+		c.JSON(http.StatusInternalServerError, "Internal Server Error")
+	default:
+		c.JSON(http.StatusInternalServerError, "Internal Server Error")
+	}
+}
+
 // @Summary Add guest
 // @Description Add guest to sql db
 // @Tags Add
@@ -73,9 +103,9 @@ func DeleteGuest(c *gin.Context) {
 // @Produce json
 // @Param body body dto.UpdateGuestRequest true "body"
 // @Success 200 {object} dto.GuestResponse "name"
-// @Failure 400 {object} errors.ErrorInfo "Invalid input"
-// @Failure 403 {object} errors.ErrorInfo "Forbiden to update"
-// @Failure 500 {object} errors.ErrorInfo "Internal server error"
+// @Failure 400 {object} errors: "Invalid input"
+// @Failure 403 {object} errors: "Forbiden to update"
+// @Failure 500 {object} errors: "Internal server error"
 // @Router /guests/:name [PUT]
 func CheckInGuest(c *gin.Context) {
 	request := dto.UpdateGuestRequest{}
@@ -88,9 +118,9 @@ func CheckInGuest(c *gin.Context) {
 	case 200:
 		c.JSON(http.StatusOK, result)
 	case 400:
-		c.JSON(http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, "Invalid input")
 	case 403:
-		c.JSON(http.StatusForbidden, nil)
+		c.JSON(http.StatusForbidden, "Forbiden to update")
 	case 500:
 		c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	default:
@@ -103,7 +133,7 @@ func CheckInGuest(c *gin.Context) {
 // @Tags GET
 // @Produce json
 // @Success 200 {object} dto.EmptySeatsResponse "seats_empty"
-// @Failure 500 {object} errors.ErrorInfo "Internal server error"
+// @Failure 500 {object} errors: "Internal server error"
 // @Router /seats_empty [GET]
 func GetEmptySeats(c *gin.Context) {
 	response := dto.EmptySeatsResponse{}
@@ -112,7 +142,7 @@ func GetEmptySeats(c *gin.Context) {
 	case 200:
 		c.JSON(http.StatusOK, result)
 	case 500:
-		c.JSON(http.StatusInternalServerError, "Internal Server Error")
+		c.JSON(http.StatusInternalServerError, "Internal server error")
 	default:
 		c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
@@ -152,22 +182,7 @@ func GetArrivedGuestLists(c *gin.Context) {
 	case 200:
 		c.JSON(http.StatusOK, result)
 	case 500:
-		c.JSON(http.StatusInternalServerError, nil)
-	default:
-		c.JSON(http.StatusInternalServerError, "Internal Server Error")
-	}
-}
-
-func AddTable(c *gin.Context) {
-	response := dto.AddTableResponse{}
-	request := dto.AddTableRequest{}
-	c.BindJSON(&request)
-	statusCode, result := services.AddTableService(request,response)
-	switch statusCode {
-	case 200:
-		c.JSON(http.StatusOK, result)
-	case 500:
-		c.JSON(http.StatusInternalServerError, "Internal Server Error")
+		c.JSON(http.StatusInternalServerError, "Internal server error")
 	default:
 		c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
