@@ -12,6 +12,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestHealth(t *testing.T) {
+	router := router.SetupRouter()
+	resp := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/health", nil)
+	router.ServeHTTP(resp, req)
+	assert.Equal(t, http.StatusOK, resp.Code)
+}
+
 func TestAddTable(t *testing.T) {
 	router := router.SetupRouter()
 

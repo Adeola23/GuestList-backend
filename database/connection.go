@@ -11,7 +11,7 @@ import (
 
 //Connect to sql db
 func DbConn() (db *sql.DB) {
-	db, err := sql.Open("mysql","root:password@tcp(docker.for.mac.localhost:3306)/database")  
+	db, err := sql.Open("mysql","root:password@tcp(localhost:3306)/database")  
 	if err != nil {
 	log.Printf("Setup MySQL connect error %+v\n", err)
 	}
