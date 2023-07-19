@@ -53,7 +53,28 @@ In the future, I would consider the following improvements in the system:
 - Adding more unittests and end-to-end integration tests.
 
 ## How to use
-- use make command to start the docker-compose
+
+
+## DbConn(Database Connection if on mac)
+
+```bash
+func DbConn() (db *sql.DB) {
+    db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/database")
+    if err != nil {
+        log.Printf("Setup MySQL connect error: %+v\n", err)
+    }
+    return db
+}
+```
+
+**Note:** Before `"make docker-up"`, replace `"localhost"` with `"docker.for.mac.localhost"` in the connection string.
+
+The `DbConn` function establishes a connection to a MySQL database using the `sql.Open` method from the `database/sql` package. It uses the MySQL driver with the appropriate connection details (username, password, host, port, and database name). In the connection string, `"docker.for.mac.localhost"` is used as the host instead of `"localhost"` to ensure proper connectivity when running the code within a Docker environment.
+
+If any error occurs during the connection setup, it will be logged using `log.Printf`.
+
+
+**Note:** use make command to start the docker-compose
 ```bash
 make docker-up
 ```
